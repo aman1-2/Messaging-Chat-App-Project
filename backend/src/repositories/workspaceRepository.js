@@ -1,7 +1,10 @@
 import Workspace from "../schema/workspace.js";
 import User from "../schema/user.js";
+
 import crudRepository from "./crudRepository.js";
+
 import ClientError from "../utils/errors/clientError.js";
+import channelRepository from "./channelRepository.js";
 
 const workspaceRepository = {
     ...crudRepository(Workspace),
@@ -42,7 +45,7 @@ const workspaceRepository = {
         }
     },
 
-    addMemberToWorkspace: async function({ workspaceId, memberId, role }) {
+    addMemberToWorkspace: async function(workspaceId, memberId, role) {
         try {
             const workspace = await Workspace.findById(workspaceId);
 
@@ -59,7 +62,7 @@ const workspaceRepository = {
             if(!isValidUser) {
                 throw new ClientError({
                     explanation: "Invalid data send feom client",
-                    message: "User not found to add",
+                    message: "User not found to add in workspace",
                     statusCode: "404"
                 });
             }
@@ -88,12 +91,60 @@ const workspaceRepository = {
         }
     },
 
-    addChannelToWorkspace: async function() {
+    addChannelToWorkspace: async function(workspaceId, channelName) {
+        try {
+            const workspace = await Workspace.findById(workspaceId).populate('channels');
 
+            if(!workspace) {
+                throw new ClientError({
+                    explanation: "Invalid data send from client",
+                    message: "Workspace not found",
+                    statusCode: "404"
+                });
+            }
+
+            const isChannelPartOfWorkspace = await Workspace.channels.find((channel) => channel.name === channelName);
+
+            if(isChannelPartOfWorkspace) {
+                throw new ClientError({
+                    explanation: "Invalid data send from client",
+                    message: "Channel is already part of the workspace",
+                    statusCode: "403"
+                });
+            }
+
+            // If channel doesn't exist then its first time this channel is going to created so we need to create this channel.
+            const channel = await channelRepository.create({name: channelName});
+
+            workspace.channels.push(channel);
+
+            await workspace.save();
+
+            return workspace;
+
+        } catch(error) {
+            console.log("Workspace Repository add channel Error: ", error);
+        }
     },
 
-    fetchAllWorkspaceByMemberId: async function() {
+    fetchAllWorkspaceByMemberId: async function(memberId) {
+        try {
+            const workspaces = await Workspace.find({
+                'members.memberId': memberId
+            }).populate('members.memberId', 'username email avatar');
 
+            if(!workspaces) {
+                throw new ClientError({
+                    explanation: "",
+                    message: "Member Not added in any Workspace",
+                    statusCode: 404
+                });
+            }
+
+            return workspaces;
+        } catch(error) {
+            console.log("Workspace Repository fetch all workspace by member-id Error: ", error);
+        }
     }
 };
 
