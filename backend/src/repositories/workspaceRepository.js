@@ -24,6 +24,7 @@ const workspaceRepository = {
             return workspace;
         } catch(error) {
             console.log("Workspace Repository get by name Error: ", error);
+            throw error;
         }
     },
 
@@ -42,6 +43,7 @@ const workspaceRepository = {
             return workspace;
         } catch(error) {
             console.log("Workspace Repository get by join code Error: ", error);
+            throw error;
         }
     },
 
@@ -68,7 +70,7 @@ const workspaceRepository = {
             }
 
             // Member already the part of the workspace
-            const isMemberPartOfWorkspace = Workspace.members.find((member) => member.memberId == memberId);
+            const isMemberPartOfWorkspace = workspace.members.find((member) => member.memberId == memberId);
             
             if(isMemberPartOfWorkspace) {
                 throw new ClientError({
@@ -85,9 +87,10 @@ const workspaceRepository = {
 
             await workspace.save();
 
-            return workspace
+            return workspace;
         } catch(error) {
             console.log("Workspace Repository add member Error: ", error);
+            throw error;
         }
     },
 
@@ -103,7 +106,7 @@ const workspaceRepository = {
                 });
             }
 
-            const isChannelPartOfWorkspace = await Workspace.channels.find((channel) => channel.name === channelName);
+            const isChannelPartOfWorkspace = await workspace.channels.find((channel) => channel.name === channelName);
 
             if(isChannelPartOfWorkspace) {
                 throw new ClientError({
@@ -124,6 +127,7 @@ const workspaceRepository = {
 
         } catch(error) {
             console.log("Workspace Repository add channel Error: ", error);
+            throw error;
         }
     },
 
@@ -144,6 +148,7 @@ const workspaceRepository = {
             return workspaces;
         } catch(error) {
             console.log("Workspace Repository fetch all workspace by member-id Error: ", error);
+            throw error;
         }
     }
 };

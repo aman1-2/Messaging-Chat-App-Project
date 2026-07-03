@@ -31,7 +31,9 @@ export const isAuthenticates = async (req, res, next) => {
         // If we have token and token is valid then fetch the user
         const user = await userRepository.getById(response.id);
         req.user = user.id;
+        
         next();
+        
     } catch(error) {
         console.log("Auth-Middleware isAuthenticates Error:", error);
 

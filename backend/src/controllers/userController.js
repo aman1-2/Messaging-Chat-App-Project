@@ -17,7 +17,7 @@ export const signUp = async (req, res) => {
 export const signIn = async (req, res) => {
     try {
         const response = await signInService(req.body);
-        return res.status(201).json(
+        return res.status(200).json(
             successResponse(response, "User signed in successfully")
         );
     } catch(error) {
