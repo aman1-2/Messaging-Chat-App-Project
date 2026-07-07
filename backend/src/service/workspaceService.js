@@ -1,10 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import workspaceRepository from "../repositories/workspaceRepository.js";
-import ValidationError from "../utils/errors/validationError.js";
 import channelRepository from '../repositories/channelRepository.js';
-import ClientError from '../utils/errors/clientError.js';
 import userRepository from '../repositories/userRepository.js';
+
+import ClientError from '../utils/errors/clientError.js';
+import ValidationError from "../utils/errors/validationError.js";
+
+import { addEmailtoMailQueue } from '../producers/mailQueueProducer.js';
+import { workspaceJoinMail } from '../utils/common/mailObject.js';
+
 
 // Some function might be populated and few might not so we are checking for both.
 const isUserAdminOfWorkspace = (workspace, userId) => {
@@ -233,7 +238,7 @@ export const addMemberToWorkspaceService = async (workspaceId, memberId, role, u
         }
 
 
-        const isValidUser = userRepository.getById(memberId);
+        const isValidUser = await userRepository.getById(memberId);
         
         if(!isValidUser) {
             throw new ClientError({
@@ -256,6 +261,12 @@ export const addMemberToWorkspaceService = async (workspaceId, memberId, role, u
         const response = await workspaceRepository.addMemberToWorkspace(
             workspaceId, memberId, role
         );
+
+        // Mail request added to the queue whenever new member is added
+        addEmailtoMailQueue({
+            ...workspaceJoinMail(workspace.name),
+            to: isValidUser.email
+        });
 
         return response;
     } catch(error) {
