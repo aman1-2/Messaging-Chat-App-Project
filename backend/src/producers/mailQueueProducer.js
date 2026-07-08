@@ -10,4 +10,4 @@ export const addEmailtoMailQueue = async (emailData) => {
         console.log("Add Email to mail queue error: ", error);
         throw error;
     }
-}
+};
