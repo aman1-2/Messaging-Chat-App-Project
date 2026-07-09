@@ -10,10 +10,8 @@ const messageRepository = {
                         .sort({ createdAt: -1})
                         .skip((page - 1)*limit)
                         .limit(limit)
-                        .populate('senderId', 'username email avatar')
-                        .populate('channelId')
-                        .populate('workspaceId');
-
+                        .populate('senderId', 'username email avatar');
+                        
             return message;
         } catch(error) {
             console.log("Message Repository Layer Error where we trying to fetch the message (in paginated fashion): ", error);

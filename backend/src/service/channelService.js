@@ -1,4 +1,5 @@
 import channelRepository from '../repositories/channelRepository.js';
+import messageRepository from '../repositories/messageRepository.js';
 import { isUserMemberOfWorkspace } from '../utils/common/userUtils.js';
 import  ClientError from '../utils/errors/clientError.js';
 
@@ -24,7 +25,27 @@ export const getChannelByIdService = async (channelId, userId) => {
             });
         }
 
-        return channel;
+        const messages = await messageRepository.getPaginatedMessages(
+            { channelId }, 1, 20
+        );
+
+        // So not able to add a property like this in mongoose object.
+        // channel.messages = messages; // When we tried to destructure it started giving some cashe details and some irrelevant data which was not needed.
+
+        // Created a custom response altogether
+        // return {
+        //     messages,
+        //     _id: channel._id,
+        //     name: channel.name,
+        //     createdAt: channel.createdAt,
+        //     updatedAt: channel.updatedAt,
+        //     workspaceId: channel.workspaceId
+        // };
+
+        return {
+            ...channel.toObject(),
+            messages
+        };
     } catch(error) {
         console.log("Getting Channel by Id Service Layer Error: ", error);
         throw error;
