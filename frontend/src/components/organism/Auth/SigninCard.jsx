@@ -15,6 +15,13 @@ const SigninCard = () => {
         password: ''
     });
 
+    function changeHandler(event) {
+        setSigninForm({
+            ...signinform,
+            [event.target.name] : event.target.value
+        });
+    }
+
     return (
         <Card className="w-full h-full" > 
 
@@ -32,7 +39,7 @@ const SigninCard = () => {
                         disabled={false}
                         type="email"
                         value = {signinform.email}
-                        onchange = {(e) => setSigninForm({...signinform, email: e.target.value})} 
+                        onchange = {changeHandler} 
                     ></Input>
 
                     <Input
@@ -41,7 +48,7 @@ const SigninCard = () => {
                         disabled = {false}
                         value = {signinform.password}
                         type = "password"
-                        onchange = {(e) => setSigninForm({ ...signinform, password: e.target.value })}
+                        onchange = {changeHandler}
                     ></Input>
 
                     <Button className="w-full" disabled={false} size='lg' type="submit">

@@ -6,18 +6,22 @@ import SigninCard from '@/components/organism/Auth/SigninCard';
 import { SignupCard } from '@/components/organism/Auth/SignupCard';
 import { Auth } from '@/pages/Auth/Auth.jsx';
 import NotFound from '@/pages/NotFound/NotFound';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<div>Home Page go to /auth</div>}></Route>
-        <Route path="/auth/signup" element={<Auth><SignupCard /></Auth>}></Route>
-        <Route path="/auth/signin" element={<Auth><SigninCard /></Auth>}></Route>
+      <QueryClientProvider client={queryClient}>
+        <Routes>
+          <Route path="/" element={<div>Home Page go to /auth</div>}></Route>
+          <Route path="/auth/signup" element={<Auth><SignupCard /></Auth>}></Route>
+          <Route path="/auth/signin" element={<Auth><SigninCard /></Auth>}></Route>
 
-        <Route path='/*' element={<NotFound></NotFound>} />
-      </Routes>
+          <Route path='/*' element={<NotFound></NotFound>} />
+        </Routes>
+      </QueryClientProvider>
     </>
   );
 }

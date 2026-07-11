@@ -17,6 +17,13 @@ export const SignupCard = () => {
         confirmPassword: ''
     });
 
+    function changeHandler(event) {
+        setSignupForm({
+            ...signupForm,
+            [event.target.name] : event.target.value
+        });
+    }
+
     return (
         <Card className="w-full h-full">
             <CardHeader>
@@ -29,7 +36,7 @@ export const SignupCard = () => {
                     <Input
                         placeholder="Email"
                         required
-                        onChange = {(e) => setSignupForm({ ...signupForm, email: e.target.value })}
+                        onChange = {changeHandler}
                         value = {signupForm.email}
                         type="email"
                         disabled={false}
@@ -38,7 +45,7 @@ export const SignupCard = () => {
                     <Input
                         placeholder="Your Username"
                         required
-                        onChange = {(e) => setSignupForm({ ...signupForm, username: e.target.value })}
+                        onChange = {changeHandler}
                         value = {signupForm.username}
                         type="text"
                         disabled={false}
@@ -47,7 +54,7 @@ export const SignupCard = () => {
                     <Input
                         placeholder="Password"
                         required
-                        onChange = {(e) => setSignupForm({ ...signupForm, password: e.target.value })}
+                        onChange = {changeHandler}
                         value = {signupForm.password}
                         type="password"
                         disabled={false}
@@ -56,7 +63,7 @@ export const SignupCard = () => {
                     <Input
                         placeholder="Confirm Password"
                         required
-                        onChange = {(e) => setSignupForm({ ...signupForm, confirmPassword: e.target.value })}
+                        onChange = {changeHandler}
                         value = {signupForm.confirmPassword}
                         type="password"
                         disabled={false}
