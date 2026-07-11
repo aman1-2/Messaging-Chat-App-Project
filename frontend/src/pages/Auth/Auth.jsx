@@ -1,6 +1,5 @@
-import { SignupCard } from '@/components/organism/Auth/SignupCard.jsx';
-
-export const Auth = () => {
+export const Auth = ({ children }) => {
+    // Layout for Auth Related Pages
     return (
         <div
             className="h-screen flex items-center justify-center bg-slack"
@@ -8,7 +7,7 @@ export const Auth = () => {
             <div
                 className="mid:h-auto md:w-[420px]"
             >
-                <SignupCard></SignupCard>
+                {children}
             </div>
 
         </div>

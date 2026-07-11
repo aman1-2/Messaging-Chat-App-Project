@@ -2,14 +2,18 @@ import './App.css';
 
 import { Route, Routes } from 'react-router-dom';
 
-import { Auth } from './pages/Auth/Auth.jsx';
+import SigninCard from '@/components/organism/Auth/SigninCard';
+import { SignupCard } from '@/components/organism/Auth/SignupCard';
+import { Auth } from '@/pages/Auth/Auth.jsx';
 
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/auth" element={<Auth />}></Route>
+        <Route path="/" element={<div>Home Page go to /auth</div>}></Route>
+        <Route path="/auth/signup" element={<Auth><SignupCard /></Auth>}></Route>
+        <Route path="/auth/signin" element={<Auth><SigninCard /></Auth>}></Route>
       </Routes>
     </>
   );

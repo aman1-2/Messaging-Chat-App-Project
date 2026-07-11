@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,6 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 
 export const SignupCard = () => {
+
+    const navigate = useNavigate();
 
     const [signupForm, setSignupForm] = useState({
         email: '',
@@ -15,7 +18,7 @@ export const SignupCard = () => {
     });
 
     return (
-        <Card classname="w-full h-full">
+        <Card className="w-full h-full">
             <CardHeader>
                 <CardTitle> Sign Up </CardTitle>
                 <CardDescription>Sign Up to access your account</CardDescription>
@@ -71,7 +74,7 @@ export const SignupCard = () => {
                 </form>
 
                 <Separator
-                    classname="my-5"
+                    className="my-5"
                 ></Separator>
 
                 <p
@@ -80,8 +83,9 @@ export const SignupCard = () => {
                     Already have an Account ?{' '}
                     <span
                         className="text-sky-600 hover:underline cursor-pointer"
+                        onClick={() => navigate('/auth/signin')}
                     >
-                        Sign In
+                        Continue
                     </span>
                 </p>
             </CardContent>
