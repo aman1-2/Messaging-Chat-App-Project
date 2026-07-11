@@ -7,8 +7,14 @@ const useSignIn = () => {
     const {isPending, isError, isSuccess, mutateAsync: signInMutation} = useMutation({
         mutationFn: signInRequest,
 
-        onSuccess: (data) => {
-            console.log('Successfully signed in User: ', data);
+        onSuccess: (response) => {
+            console.log('Successfully signed in User: ', response);
+
+            const userObject = JSON.stringify(response.data);
+
+            localStorage.setItem('user', userObject);
+            localStorage.setItem('token', response.data.token);
+
             toast.success('Successfully signed in');
         },
 
