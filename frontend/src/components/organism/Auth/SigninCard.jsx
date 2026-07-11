@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { LucideLoader2, TriangleAlert } from 'lucide-react';
+import { FaCheck } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
@@ -6,21 +7,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 
-const SigninCard = () => {
+const SigninCard = ({
+    signinForm, 
+    changeHandler,
+    onSigninFormSubmit,
+    validationError,
+    isSuccess,
+    isPending,
+    isError
+}) => {
 
     const navigate = useNavigate();
-
-    const [signinform, setSigninForm] = useState({
-        email: '',
-        password: ''
-    });
-
-    function changeHandler(event) {
-        setSigninForm({
-            ...signinform,
-            [event.target.name] : event.target.value
-        });
-    }
 
     return (
         <Card className="w-full h-full" > 
@@ -28,30 +25,71 @@ const SigninCard = () => {
             <CardHeader>
                 <CardTitle> Sign In </CardTitle>
                 <CardDescription> Sign In to access your account</CardDescription>
+
+                {
+                    validationError && (
+                        <div className='bg-destructive/15 p-4 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6'>
+                            <TriangleAlert className='size-5'></TriangleAlert>
+                            <p> {validationError.message} </p>
+                        </div>
+                    )
+                    
+                }
+
+                {
+                    isError && (
+                        <div className='bg-destructive/15 p-4 rounded-md flex items-center gap-x-2 text-sm text-destructive mb-6'>
+                            <TriangleAlert className='size-5'></TriangleAlert>
+                            <p> Password or Email is wrong </p>
+                        </div>
+                    )
+                    
+                }
+
+                {
+                    isSuccess && (
+                        <div className='bg-primary/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-primary mb-5'>
+                            <FaCheck className='size-5'></FaCheck>
+                            <p>
+                                Successfully Signed in. You will be redirected to the Workspace in few seconds.
+
+                                <LucideLoader2 className='animate-spin ml-2'></LucideLoader2>
+                            </p>
+                        </div>
+                    )
+                }
+
             </CardHeader>
              
             <CardContent>
 
-                <form className='space-y-3'>
+                <form className='space-y-3' onSubmit={onSigninFormSubmit}>
                     <Input
+                        name = "email"
                         placeholder = "Enter your email-id"
                         required
-                        disabled={false}
+                        disabled={isPending}
                         type="email"
-                        value = {signinform.email}
-                        onchange = {changeHandler} 
+                        value = {signinForm.email}
+                        onChange = {changeHandler} 
                     ></Input>
 
                     <Input
+                        name = "password"
                         placeholder = "Enter your Password"
                         required
-                        disabled = {false}
-                        value = {signinform.password}
+                        disabled = {isPending}
+                        value = {signinForm.password}
                         type = "password"
-                        onchange = {changeHandler}
+                        onChange = {changeHandler}
                     ></Input>
 
-                    <Button className="w-full" disabled={false} size='lg' type="submit">
+                    <Button 
+                        className="w-full" 
+                        disabled={isPending} 
+                        size='lg' 
+                        type="submit"
+                    >
                         Continue
                     </Button>
 

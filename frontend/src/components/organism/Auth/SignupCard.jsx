@@ -103,7 +103,7 @@ export const SignupCard = ({
                     />
 
                     <Button
-                        disabled={false}
+                        disabled={isPending}
                         size="lg"
                         type="submit"
                         className="w-full"
