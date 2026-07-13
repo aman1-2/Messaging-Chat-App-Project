@@ -49,7 +49,7 @@ export const AuthContextProvider = ({ children }) => {
             return {
             user: user ? JSON.parse(user) : null,
             token: token || null,
-            isLoading: false
+            isLoading: (user && token) ? false : true
         };
         } catch(error) {
             console.log('Failed to load auth data: ', error);
