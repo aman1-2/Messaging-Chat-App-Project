@@ -27,7 +27,7 @@ export const WorkspaceNavbar = () => {
                 >
                     <SearchIcon className="size-5 text-white mr-2"></SearchIcon>
                     <span className="text-white text-xs">
-                        Search {workspaceByIdDetails?.name || 'Workspace'}
+                        Search {workspaceByIdDetails?.data?.name || 'Workspace'}
                     </span>
                 </Button>
             </div>
