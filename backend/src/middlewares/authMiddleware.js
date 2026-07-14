@@ -46,7 +46,7 @@ export const isAuthenticates = async (req, res, next) => {
             );
         }
 
-        return res.status().json(
+        return res.status(500).json(
             internalErrorResponse(error)
         )
     }
