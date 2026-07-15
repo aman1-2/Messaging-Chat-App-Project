@@ -13,7 +13,7 @@ export const WorkspaceLayout = ({ children }) => {
                 <ResizablePanelGroup direction="horizontal">
                     <ResizablePanel
                         id="left-navigation-panel"
-                        defaultSize="20%"
+                        defaultSize="25%"
                         minSize="13%"
                         className="bg-slack-medium"
                     >

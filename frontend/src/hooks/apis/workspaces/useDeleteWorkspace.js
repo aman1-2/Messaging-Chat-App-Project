@@ -3,12 +3,15 @@ import { toast } from 'sonner';
 
 import { deleteWorkspaceRequest } from '@/apis/workspaces';
 import useAuth from '@/hooks/context/useAuth';
+import useWorkspacePreferencesModal from '@/hooks/context/useWorkspacePreferencesModal';
 
-const useDeleteWorkspace = ( workspaceId ) => {
+const useDeleteWorkspace = () => {
     const { auth } = useAuth();
 
+    const { workspace } = useWorkspacePreferencesModal();
+
     const { isSuccess, isPending, error, mutateAsync: deleteWorkspaceMutation } = useMutation({
-        mutationFn: () => deleteWorkspaceRequest({ workspaceId: workspaceId, token: auth?.token}),
+        mutationFn: () => deleteWorkspaceRequest({ workspaceId: workspace._id, token: auth?.token}),
         onSuccess: (response) => {
             console.log('Successfully Deleted the Workspace: ', response);
             toast.success('Successfully Deleted the Workspace');

@@ -1,14 +1,27 @@
 import { TrashIcon } from 'lucide-react';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import useDeleteWorkspace from '@/hooks/apis/workspaces/useDeleteWorkspace';
 import useWorkspacePreferencesModal from '@/hooks/context/useWorkspacePreferencesModal';
 
 export const WorkspacePreferencesModal = () => {
     const { initialValue, openWorkspacePreferenceModal, setOpenWorkspacePreferenceModal } = useWorkspacePreferencesModal();
 
+    const { deleteWorkspaceMutation } = useDeleteWorkspace();
+
     function handleClose() {
         setOpenWorkspacePreferenceModal(false);
     }
+
+    async function handleDeleteWorkspace() {
+        try {
+            await deleteWorkspaceMutation();
+        } catch(error) {
+            console.log('Error Faced while deleting the workspace: ', error);
+            throw error.response.data;
+        }
+    }
+
     return(
         <Dialog
             open = {openWorkspacePreferenceModal}
@@ -35,7 +48,10 @@ export const WorkspacePreferencesModal = () => {
                         </p>
                     </div>
 
-                    <button className="flex items-center gap-x-2 px-5 py-4 bg-white rounded-lg">
+                    <button 
+                        className="flex items-center gap-x-2 px-5 py-4 bg-white rounded-lg"
+                        onClick={handleDeleteWorkspace}
+                    >
                         <TrashIcon className="size-5"></TrashIcon>
                         <p className='text-sm font-semibold'>
                             Delete Workspace
