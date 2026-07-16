@@ -12,7 +12,10 @@ const WorkspacePanelHeader = ({ workspace }) => {
 
     const { auth } = useAuth();
 
-    const isUserAdmin = workspaceMemebers.find((member) => (member.memberId === auth?.user?._id && member.role === 'admin'));
+    const isUserAdmin = workspaceMemebers.find(
+        (member) => {
+            return (member.memberId._id === auth?.user?._id && member.role === 'admin');
+        });
 
     const { setOpenWorkspacePreferenceModal, setInitialValue, setWorkspace } = useWorkspacePreferencesModal();
 
