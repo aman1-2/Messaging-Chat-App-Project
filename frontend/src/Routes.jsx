@@ -14,10 +14,11 @@ const AppRoutes = () => {
         <Routes>
             <Route path="/" element={<h1>The first page</h1>}></Route>
 
-            <Route path="/home" element={<ProtectedRoute> <Home /> </ProtectedRoute>}></Route>
-            <Route path="/workspaces/:workspaceId" element={<ProtectedRoute> <WorkspaceLayout> Workspace </WorkspaceLayout> </ProtectedRoute>}></Route>
-            <Route path="/auth/signup" element={<Auth><SignupCardContainer /></Auth>}></Route>
-            <Route path="/auth/signin" element={<Auth><SigninCardContainer /></Auth>}></Route>
+            <Route path="/home" element={<ProtectedRoute> <Home /> </ProtectedRoute>} ></Route>
+            <Route path="/workspaces/:workspaceId" element={<ProtectedRoute> <WorkspaceLayout> Workspace </WorkspaceLayout> </ProtectedRoute>} ></Route>
+            <Route path="/auth/signup" element={<Auth><SignupCardContainer /></Auth>} ></Route>
+            <Route path="/auth/signin" element={<Auth><SigninCardContainer /></Auth>} ></Route>
+            <Route path="/workspaces/:workspaceId/channels/:channelId" element={<ProtectedRoute>  </ProtectedRoute>}></Route>
 
             <Route path='/*' element={<NotFound></NotFound>} />
           </Routes>
