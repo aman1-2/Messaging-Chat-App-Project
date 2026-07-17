@@ -28,7 +28,7 @@ const SideBarItem = ({ label, channelId, icon: Icon, variant='active' }) => {
                 to={`/workspaces/${workspaceId}/channels/${channelId}`}
             >
                 <Icon className='size-3.5 mr-1' />
-                <div className="text-sm"> {label} </div>
+                <span className="text-sm"> {label} </span>
             </Link>
         </Button>
     );
