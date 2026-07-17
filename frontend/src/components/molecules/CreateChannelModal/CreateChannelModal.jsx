@@ -3,20 +3,29 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import useAddChannelToWorkspace from '@/hooks/apis/workspaces/useAddChannelToWorkspace';
 import useCreateChannelModal from '@/hooks/context/useCreateChannelModal';
+import useCurrentWorkspace from '@/hooks/context/useCurrentWorkspace';
 
 const CreateChannelModal = () => {
     
     const [channelName, setChannelName] = useState('');
 
     const { openCreateChannelModal, setOpenCreateChannelModal } = useCreateChannelModal();
+    const { currentWorkspace } = useCurrentWorkspace();
+    const { addChannelToWorkspaceMutation } = useAddChannelToWorkspace(currentWorkspace?.data?._id);
 
     function handleClose() {
         setOpenCreateChannelModal(false);
     }
 
-    function handleFormSubmit(event) {
+    async function handleFormSubmit(event) {
+        console.log('Triggering the create workspace');
         event.preventDefault();
+        await addChannelToWorkspaceMutation({
+            channelName: channelName
+        });
+        handleClose();
     }
 
     return(
@@ -37,7 +46,7 @@ const CreateChannelModal = () => {
                     />
 
                     <div className="flex justify-end mt-4">
-                        <Button>
+                        <Button type='submit'>
                             Create Channel
                         </Button>
                     </div>

@@ -13,11 +13,13 @@ const SideBarItemVariants = cva(
             active: 'text-[#481350] bg-white/90 hover:bg-white/80',
         }
       },
-      defaultVariants: 'default'
+      defaultVariants: {
+        variant: 'default'
+      }
     }
 );
 
-const SideBarItem = ({ label, channelId, icon: Icon, variant='active' }) => { 
+const SideBarItem = ({ label, channelId, icon: Icon, variant }) => { 
 
     const { workspaceId } = useParams();
 

@@ -79,3 +79,21 @@ export const updateWorkspaceRequest = async ({ workspaceId, updateData, token })
         throw error.response?.data;
     }
 };
+
+export const addChannelRequest = async({ workspaceId, channelName, token}) => {
+    try {
+        const response = await axios.put(`/workspaces/${workspaceId}/channels`, 
+            { channelName },
+            {
+                headers: {
+                    'x-access-token': token
+                }
+            }
+        );
+
+        return response?.data;
+    } catch(error) {
+        console.log('API Request Error while creating a channel for the workspace: ', error);
+        throw error.response?.data;
+    }
+};
