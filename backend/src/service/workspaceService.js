@@ -317,3 +317,14 @@ export const addChannelToWorkspaceService = async (workspaceId, channelName, use
         throw error;
     }
 }
+
+export const resetWorkspaceJoinCodeService = async function(workspaceId, userId) {
+    try {
+        const newJoinCode = uuidv4().toUpperCase();
+        const updatedWorkspace = await updateWorkspaceService(workspaceId,{ joinCode: newJoinCode }, userId);
+        return updatedWorkspace;
+    } catch(error) {
+        console.log("Reset Join-Code of Workspace Service Layer Error: ", error);
+        throw error;
+    }
+}
