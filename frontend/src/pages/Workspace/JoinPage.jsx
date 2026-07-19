@@ -25,7 +25,7 @@ const JoinPage = () => {
 
     useEffect(() => {
         console.log(joinCode);
-        if (joinCode.length === 36) {
+        if (joinCode.length === 6) {
             handleAddMemberToWorkspace(joinCode);
         }
     }, [joinCode]);

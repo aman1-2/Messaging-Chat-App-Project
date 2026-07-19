@@ -2,6 +2,7 @@ import { AlertTriangleIcon, HashIcon, Loader, MessageSquareTextIcon, SendHorizon
 import { useParams } from 'react-router-dom';
 
 import SideBarItem from '@/components/atoms/SideBarItem/SideBarItem';
+import UserItem from '@/components/atoms/UserItem/UserItem';
 import WorkspacePanelHeader from '@/components/molecules/Workspace/WorkspacePanelHeader';
 import WorkspacePanelSection from '@/components/molecules/Workspace/WorkspacePanelSection';
 import { useGetWorkspaceById } from '@/hooks/apis/workspaces/useGetWorkspaceById';
@@ -12,6 +13,8 @@ export const WorkspacePanel = () => {
 
     const { isFetching, isSuccess, workspaceByIdDetails } = useGetWorkspaceById(workspaceId);
     const { setOpenCreateChannelModal } = useCreateChannelModal();
+
+    console.log('Members details: ', workspaceByIdDetails?.data?.members);
 
     if(isFetching) {
         return(
@@ -72,6 +75,26 @@ export const WorkspacePanel = () => {
                         );
                     }
                 )}
+            </WorkspacePanelSection>
+
+            <WorkspacePanelSection
+                label={'Direct Messages'}
+                onIconClick={() => {}}
+            >
+                {workspaceByIdDetails?.data?.members.map(
+                    (member) => {
+                        return (
+                            <UserItem 
+                                key={member.memberId._id}
+                                label={member.memberId.username}
+                                userId={member.memberId._id}
+                                imageSrc={member.memberId.avatar}
+                            />
+                        );
+                    }
+                )
+
+                }
             </WorkspacePanelSection>
         </div>
     );

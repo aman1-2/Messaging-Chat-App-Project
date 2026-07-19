@@ -1,4 +1,4 @@
-import { CopyIcon, RefreshCcwIcon } from 'lucide-react';
+import { CopyIcon, Link2Icon, RefreshCcwIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -13,10 +13,16 @@ const WorkspaceInviteModal = ({ openInviteModal, setOpenInviteModal, workspaceNa
     // console.log(currentWorkspace?.data?.name);
     // console.log(currentWorkspace?.data?.joinCode);
 
-    async function handleCopy() {
+    async function handleCopyCode() {
         const inviteCode = `${joinCode}`;
         await navigator.clipboard.writeText(inviteCode);
         toast.info('Invite Code copied in Clipboard');
+    }
+
+    async function handleCopyLink() {
+        const inviteLink = `${window.origin}/workspaces/join/${workspaceId}`;
+        await navigator.clipboard.writeText(inviteLink);
+        toast.info('Invite Link copied to Clipboard');
     }
 
     async function handleResetCode() {
@@ -35,23 +41,34 @@ const WorkspaceInviteModal = ({ openInviteModal, setOpenInviteModal, workspaceNa
                         Invite People to { workspaceName }
                     </DialogTitle>
                     <DialogDescription>
-                        Use the code shown below to intvite people to your workspace.
+                        Use the code or link shown below to intvite people to your workspace.
                     </DialogDescription>
                 </DialogHeader>
 
                 <div className="flex flex-col items-center justify-center py-10 gap-y-4">
-                    <p className='font-bold text-xl uppercase'>
+                    <p className='font-bold text-3xl uppercase'>
                         { joinCode }
                     </p>
 
-                    <Button 
-                        size="sm" 
-                        variant="ghost"
-                        onClick={handleCopy}
-                    >
-                        Copy Code
-                        <CopyIcon className="size-4 ml-2" />
-                    </Button>
+                    <div className='flex gap-x-2'>
+                        <Button 
+                            size="sm" 
+                            variant="ghost"
+                            onClick={handleCopyCode}
+                        >
+                            Copy Code
+                            <CopyIcon className="size-4 ml-2" />
+                        </Button>
+
+                        <Button 
+                            size="sm" 
+                            variant="ghost"
+                            onClick={handleCopyLink}
+                        >
+                            Copy Link
+                            <Link2Icon className="size-4 ml-2" />
+                        </Button>
+                    </div>
 
                     <Link 
                         className='flex items-center gap-1.5' 
