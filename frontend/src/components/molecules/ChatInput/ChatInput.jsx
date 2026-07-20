@@ -1,11 +1,14 @@
 import Editor from '@/components/atoms/Editor/Editor';
 
 const ChatInput = () => {
+    async function handleSubmit({ messageBody }) {
+        console.log(messageBody);
+    }
     return (
         <div className="px-5 w-full">
             <Editor
                 placeholder="Type a message..."
-                onSubmit={() => {}}
+                onSubmit={handleSubmit}
                 onCancel={() => {}}
                 disabled={false}
                 defaultValue=""

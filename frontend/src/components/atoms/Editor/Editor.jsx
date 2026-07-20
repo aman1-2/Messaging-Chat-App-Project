@@ -150,7 +150,7 @@ const Editor = ({
                             className="ml-auto bg-[#007a6a] hover:bg-[#007a6a]/80 text-white"
                             onClick={() => {
                                 const messageContent = JSON.stringify(quillRef.current?.getContents());
-                                onSubmit({ body: messageContent, image });
+                                onSubmit({ messageBody: messageContent, image });
                                 quillRef.current?.setText('');
                                 setImage(null);
                                 imageInputRef.current.value = '';
