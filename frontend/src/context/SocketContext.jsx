@@ -1,13 +1,21 @@
 import { createContext, useState } from 'react';
 import { io } from 'socket.io-client';
 
+import useChannelMessage from '@/hooks/context/useChannelMessages';
+
 const SocketContex = createContext();
 
 export const SocketContextProvider = ({ children }) => {
     // Need to store the channel detail inside this context as we want to send the message to the particular channel itself.
     const [currentChannel, setCurrentChannel] = useState(null);
+    const { messageList, setMessageList } = useChannelMessage();
 
     const socket = io(import.meta.env.VITE_BACKEND_SOCKET_URL);
+
+    socket.on('NewMessagesReceived', (data) => {
+        console.log('New Message Received', data);
+        setMessageList([...messageList, data]);
+    });
 
     async function joinChannel(channelId) {
         socket.emit('JoinChannel', { channelId }, (data) => {
