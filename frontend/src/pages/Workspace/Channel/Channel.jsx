@@ -15,7 +15,7 @@ const Channel = () => {
 
     const { channelId } = useParams();
     const queryClient = useQueryClient();
-    const messageListContainerRef = useRef();
+    const messageListContainerRef = useRef(null);
 
     const { channelDetails, isFetching, isError } = useGetChannelById(channelId);
     const { messageList, setMessageList } = useChannelMessage();
@@ -29,7 +29,7 @@ const Channel = () => {
     }, [messageList]);
 
     useEffect(() => {
-        queryClient.invalidateQueries(['getPaginatedMessages'], channelId);
+        queryClient.invalidateQueries(['getPaginatedMessages', channelId]);
     }, [channelId, queryClient]);
 
     useEffect(() => {
@@ -42,7 +42,7 @@ const Channel = () => {
     useEffect(() => {
         if(isSuccess) {
             console.log('Channel Messages Fetched Successfully.');
-            setMessageList(channelMessages?.data?.reverse());
+            setMessageList(channelMessages?.data?.slice().reverse());
         }
     }, [isSuccess, channelMessages, setMessageList, channelId]);
 
@@ -77,7 +77,14 @@ const Channel = () => {
                 {
                     !isFetchingChannelMessages && messageList?.map((message) => {
                         return (
-                            <Message key={message._id} messageBody={message?.body} authorImage={message?.senderId?.avatar} authorName={message?.senderId?.username} createdAt={message?.createdAt} />
+                            <Message 
+                                key={message._id} 
+                                messageBody={message?.body} 
+                                authorImage={message?.senderId?.avatar} 
+                                authorName={message?.senderId?.username} 
+                                createdAt={message?.createdAt} 
+                                imageUrl={message?.image}
+                            />
                         );
                     }) 
                 }
