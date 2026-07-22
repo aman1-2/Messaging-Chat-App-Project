@@ -1,15 +1,27 @@
-import { useState } from 'react';
-
 import Editor from '@/components/atoms/Editor/Editor';
-import MessageRenderer from '@/components/atoms/MessageRender/MessageRenderer';
+import useAuth from '@/hooks/context/useAuth';
+import useCurrentWorkspace from '@/hooks/context/useCurrentWorkspace';
+import useSocket from '@/hooks/context/useSocket';
 
 const ChatInput = () => {
-    const [text, setText] = useState('');
+    const { socket, currentChannel } = useSocket();
+    const { auth } = useAuth();
+    const { currentWorkspace } = useCurrentWorkspace();
+
+    console.log('channel: ', currentChannel);
 
     async function handleSubmit({ messageBody }) {
         console.log(messageBody);
-        setText(messageBody);
+        socket?.emit('NewMessage', {
+            channelId: currentChannel,
+            body: messageBody,
+            senderId: auth?.user?._id,
+            workspaceId: currentWorkspace?.data?._id
+        }, (data) => {
+            console.log('Message Sent: ', data);
+        });
     }
+
     return (
         <div className="px-5 w-full">
             <Editor
@@ -20,10 +32,6 @@ const ChatInput = () => {
                 defaultValue=""
             >
             </Editor>
-
-            {
-                text && <MessageRenderer value={text} />
-            }
         </div>
     );
 };
