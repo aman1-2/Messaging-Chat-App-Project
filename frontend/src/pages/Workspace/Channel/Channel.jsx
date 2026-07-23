@@ -20,12 +20,12 @@ const Channel = () => {
     const { channelDetails, isFetching, isError } = useGetChannelById(channelId);
     const { messageList, setMessageList } = useChannelMessage();
     const { joinChannel } = useSocket();
-    const { isFetching: isFetchingChannelMessages, channelMessages, isSuccess } = useGetChannelMessages(channelId);
+    const { channelMessages, isSuccess } = useGetChannelMessages(channelId);
 
     useEffect(() => {
         if(messageListContainerRef.current) {
-                messageListContainerRef.current.scrollTop = messageListContainerRef.current.scrollHeight;
-            }
+            messageListContainerRef.current.scrollTop = messageListContainerRef.current.scrollHeight;
+        }
     }, [messageList]);
 
     useEffect(() => {
@@ -41,8 +41,8 @@ const Channel = () => {
 
     useEffect(() => {
         if(isSuccess) {
-            console.log('Channel Messages Fetched Successfully.');
-            setMessageList(channelMessages?.data?.slice().reverse());
+            console.log('Channel Messages Fetched Successfully.', messageList);
+            setMessageList([...channelMessages.data].reverse());
         }
     }, [isSuccess, channelMessages, setMessageList, channelId]);
 
@@ -75,7 +75,7 @@ const Channel = () => {
                 ref={messageListContainerRef}
             >
                 {
-                    !isFetchingChannelMessages && messageList?.map((message) => {
+                    messageList?.map((message) => {
                         return (
                             <Message 
                                 key={message._id} 

@@ -7,6 +7,7 @@ export const Hint = ({ align, side, label, children }) => {
                 <TooltipTrigger asChild>
                     {children}
                 </TooltipTrigger>
+                
                 <TooltipContent
                     side={side}
                     align={align}

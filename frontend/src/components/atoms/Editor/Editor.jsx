@@ -9,6 +9,7 @@ import { PiTextAa } from 'react-icons/pi';
 import { Button } from '@/components/ui/button';
 
 import { Hint } from '../Hint/Hint';
+
 const Editor = ({
     // variant = 'create',
     onSubmit
@@ -18,7 +19,6 @@ const Editor = ({
 }) => {
 
     const [isToolbarVisible, setIsToolbarVisible] = useState(false);
-
     const [image, setImage] = useState(null);
 
     const containerRef = useRef(); // reqd to initialize the editor
@@ -77,27 +77,19 @@ const Editor = ({
         quillRef.current.focus();
 
         quill.setContents(defaultValueRef.current);
-
     }, []);
 
 
     return (
-        <div
-            className='flex flex-col'
-        >
-
-            <div
-                className='flex flex-col border border-slate-300 rounded-md overflow-hidden focus-within:shadow-sm focus-within:border-slate-400 bg-white '
-            >
+        <div className='flex flex-col' >
+            <div className='flex flex-col border border-slate-300 rounded-md overflow-hidden focus-within:shadow-sm focus-within:border-slate-400 bg-white' >
                 <div className='h-full ql-custom' ref={containerRef} />
-                {
+                {/* {
                     image && (
-                        <div
-                            className='p-2'
-                        >
+                        <div className='p-2 '>
                             <div className='relative size-[60px] flex items-center justify-center group/image'>
                                 <button
-                                    className='hidden group-hover/image:flex rounded-full bg-black/70 hover:bg-black absolute -top-2.5 -right-2.5 text-white size-6 z-[5] border-2 border-white items-center justify-center'
+                                    className='hidden group-hover/image:flex rounded-full bg-black/70 hover:bg-black absolute -top-3 -right-2.5 text-white size-6 z-5 border-2 border-white items-center justify-center'
                                     onClick={() => {
                                         setImage(null);
                                         imageInputRef.current.value = '';
@@ -109,6 +101,29 @@ const Editor = ({
                                     src={URL.createObjectURL(image)}
                                     className='rounded-xl overflow-hidden border object-cover'
                                 />
+                            </div>
+                        </div>
+                    )
+                } */}
+
+                {
+                    image && (
+                        <div className="p-2 border-t">
+                            <div className="relative w-28 h-28">
+                                <img
+                                    src={URL.createObjectURL(image)}
+                                    className="w-full h-full object-cover rounded-lg border"
+                                />
+
+                                <button
+                                    className="absolute -top-2 -right-2 bg-black text-white rounded-full p-1"
+                                    onClick={() => {
+                                        setImage(null);
+                                        imageInputRef.current.value = '';
+                                    }}
+                                >
+                                    <XIcon size={14} />
+                                </button>
                             </div>
                         </div>
                     )
@@ -163,9 +178,7 @@ const Editor = ({
                 </div>
             </div>
 
-            <p
-                className='p-2 text-[10px] text-mutes-foreground flex justify-end'
-            >
+            <p className='p-2 text-[10px] text-mutes-foreground flex justify-end'>
                 <strong>Shift + return</strong> &nbsp; to add a new line
             </p>
         </div>
