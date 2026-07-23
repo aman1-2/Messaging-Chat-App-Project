@@ -1,3 +1,6 @@
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+
 import { S3 } from '../config/awsConfig.js';
 import { AWS_BUCKET_NAME } from '../config/serverConfig.js';
 import { getMessagesService } from '../service/messageService.js';
@@ -32,11 +35,21 @@ export const getMessagesController = async (req, res) => {
 
 export const getPresignedUrlFromAWS = async (req, res) => {
     try {
-        const url = await S3.getSignedUrlPromise('putObject', {
+
+        const command = new PutObjectCommand({
             Bucket: AWS_BUCKET_NAME,
-            Key: `${Date.now()}`,
-            Expires: 60 // 1 Minute
+            Key: `${Date.now()}`
         });
+
+        const url = await getSignedUrl(S3, command, {
+            expiresIn: 60 // seconds
+        });
+
+        // const url = await S3.getSignedUrlPromise('putObject', {
+        //     Bucket: AWS_BUCKET_NAME,
+        //     Key: `${Date.now()}`,
+        //     Expires: 60 // 1 Minute
+        // });
         
         return res.status(200).json(
             successResponse(url, 'PreSigned url generated successfully form AWS')

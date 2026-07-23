@@ -4,7 +4,7 @@ import { getMessagesController, getPresignedUrlFromAWS } from '../../controllers
 
 const router = Router();
 
-router.get('/:channelId' ,isAuthenticates, getMessagesController);
 router.get('/pre-signed-url', isAuthenticates, getPresignedUrlFromAWS);
+router.get('/:channelId' ,isAuthenticates, getMessagesController);
 
 export default router;
