@@ -34,7 +34,7 @@ const isChannelPartOfWorkspace = (workspace, channelName) => {
 
 export const createWorkspaceService = async (workspaceData) => {
     try {
-        const joinCode = uuidv4().substring(0, 6).toUpperCase(); // This will return 36 character string
+        const joinCode = uuidv4().substring(0, 6).toUpperCase(); // This will return 6 character string
         
         const response = await workspaceRepository.create({ 
             name: workspaceData.name,
