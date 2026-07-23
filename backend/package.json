@@ -15,6 +15,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1093.0",
     "@bull-board/api": "^8.1.2",
     "@bull-board/express": "^8.1.2",
     "bcrypt": "^6.0.0",
