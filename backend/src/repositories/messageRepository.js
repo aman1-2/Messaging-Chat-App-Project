@@ -17,6 +17,16 @@ const messageRepository = {
             console.log("Message Repository Layer Error where we trying to fetch the message (in paginated fashion): ", error);
             throw error;
         }
+    },
+
+    getMessageDetails: async (messageId) => {
+        try {
+            const message = await Message.findById(messageId).populate( 'senderId', 'username email avatar');
+            return message;
+        } catch(error) {
+            console.log("Message Repository Layer Error where we are trying to get all the messaages details: ", error);
+            throw error;
+        }
     }
 };
 
