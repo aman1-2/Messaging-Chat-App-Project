@@ -1,4 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { Loader2Icon, TriangleAlertIcon } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
@@ -14,23 +13,24 @@ import useSocket from '@/hooks/context/useSocket';
 const Channel = () => {
 
     const { channelId } = useParams();
-    const queryClient = useQueryClient();
     const messageListContainerRef = useRef(null);
 
     const { channelDetails, isFetching, isError } = useGetChannelById(channelId);
-    const { messageList, setMessageList } = useChannelMessage();
     const { joinChannel } = useSocket();
     const { channelMessages, isSuccess } = useGetChannelMessages(channelId);
+    const { messageList, setMessageList } = useChannelMessage();
 
     useEffect(() => {
         if(messageListContainerRef.current) {
             messageListContainerRef.current.scrollTop = messageListContainerRef.current.scrollHeight;
         }
+        
+        // messageListContainerRef.current?.scrollTo({
+        //     top: messageListContainerRef.current.scrollHeight,
+        //     behavior: 'smooth',
+        // });
+        
     }, [messageList]);
-
-    useEffect(() => {
-        queryClient.invalidateQueries(['getPaginatedMessages', channelId]);
-    }, [channelId, queryClient]);
 
     useEffect(() => {
         if(!isFetching && !isError) {
@@ -40,11 +40,13 @@ const Channel = () => {
     }, [isFetching, isError, joinChannel, channelId]);
 
     useEffect(() => {
-        if(isSuccess) {
-            console.log('Channel Messages Fetched Successfully.', messageList);
-            setMessageList([...channelMessages.data].reverse());
-        }
-    }, [isSuccess, channelMessages, setMessageList, channelId]);
+        if (!isSuccess || !channelMessages?.data) return;
+        
+        console.log('Before Setting Channel Message from Channel page: ', messageList);
+        setMessageList([...channelMessages.data].reverse());
+        console.log('After Setting Channel Message from Channel page: ', messageList);
+
+    }, [isSuccess, channelMessages, setMessageList]);
 
     if(isFetching) {
         return (
@@ -75,7 +77,7 @@ const Channel = () => {
                 ref={messageListContainerRef}
             >
                 {
-                    messageList?.map((message) => {
+                    messageList.map((message) => {
                         return (
                             <Message 
                                 key={message._id} 

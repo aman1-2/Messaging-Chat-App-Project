@@ -3,16 +3,15 @@ import { io } from 'socket.io-client';
 
 import useChannelMessage from '@/hooks/context/useChannelMessages';
 
-const SocketContex = createContext();
+const SocketContext = createContext();
 
 export const SocketContextProvider = ({ children }) => {
-    // Need to store the channel detail inside this context as we want to send the message to the particular channel itself.
     const [currentChannel, setCurrentChannel] = useState(null);
     const { messageList, setMessageList } = useChannelMessage();
 
     const socket = io(import.meta.env.VITE_BACKEND_SOCKET_URL);
 
-    socket.on('NewMessagesReceived', (data) => {
+    socket.on('NewMessageReceived', (data) => {
         console.log('New Message Received', data);
         setMessageList([...messageList, data]);
     });
@@ -25,10 +24,10 @@ export const SocketContextProvider = ({ children }) => {
     }
 
     return(
-        <SocketContex.Provider value={{ socket, joinChannel, currentChannel }}>
+        <SocketContext.Provider value={{ socket, joinChannel, currentChannel }}>
             {children}
-        </SocketContex.Provider>
+        </SocketContext.Provider>
     );
 };
 
-export default SocketContex;
+export default SocketContext;

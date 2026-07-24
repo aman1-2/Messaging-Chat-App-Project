@@ -3,7 +3,7 @@ import { createContext, useState } from 'react';
 const ChannelMessage = createContext();
 
 export const ChannelMessageProvider = ( { children }) => {
-    const [messageList, setMessageList] = useState(null);
+    const [messageList, setMessageList] = useState([]);
 
     return (
         <ChannelMessage.Provider value={{ messageList, setMessageList }}>
