@@ -14,3 +14,21 @@ export const createOrderRequest = async ({ token, amount }) => {
         throw error.response?.data;
     }
 };
+
+export const capturePayment = async (token, orderId, status, paymentId, signature) => {
+    try {
+        const response = await axios.post('/payments/capture', 
+            {orderId, status, paymentId, signature},
+            {
+                headers: {
+                    'x-access-token': token
+                }
+            }
+        );
+
+        return response?.data?.data;
+    } catch(error) {
+        console.log('API Error Request While capturing the payment: ', error);
+        throw error.response?.data;
+    }
+};

@@ -1,14 +1,17 @@
 import { useState } from 'react';
 
+import RenderRazorPopup from '@/components/molecules/RenderRazorpayPopup/RenderRazorpayPopup';
 import useCreateOrder from '@/hooks/apis/payments/useCreateOrder';
 
 const Payments = () => {
     const [amount, setAmount] = useState('');
-    const { createOrderMutation } = useCreateOrder();
+    const [orderResponse, setOrderResponse] = useState(null);
+    const { createOrderMutation, isSuccess } = useCreateOrder();
 
     async function handleFormSubmit(event) {
         event.preventDefault();
-        await createOrderMutation(amount);
+        const response = await createOrderMutation(amount);
+        setOrderResponse(response);
     }
 
     return (
@@ -39,6 +42,15 @@ const Payments = () => {
                         >
                             Pay
                         </button>
+
+                        { isSuccess && (
+                            <RenderRazorPopup 
+                                amount={amount}
+                                orderId={orderResponse?.id}
+                                keyId={'rzp_test_7ukrMLOkj5sVp6'}
+                                currency={'INR'}
+                            />
+                        )}
                     </div>
                 </form>
             </div>
